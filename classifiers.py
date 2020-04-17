@@ -2,9 +2,27 @@
 """
 
 @author: Samip
+@modified by: Tirth
 """
 
 class Classifier:
+    """ Neural Network"""
+
+    def neural_net(x_train, y_train):
+        # imports
+        import keras
+        import tensorflow
+        from keras.models import Sequential
+        from keras.layers import Dense
+        # adding layers
+        model = Sequential()
+        model.add(Dense(64, input_dim=12, activation='relu'))
+        model.add(Dense(32, activation='relu'))
+        model.add(Dense(1, activation="sigmoid"))
+        # compiling model
+        model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+        model.fit(x_train, y_train, epochs=10)
+        return model
         
     """Logistic Regression""" 
     def logistic_regression(self, x_train, y_train):
