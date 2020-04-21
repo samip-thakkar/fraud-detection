@@ -7,8 +7,13 @@
 
 class Classifier:
     """ Neural Network"""
+    # def save_models(self, model, name):
+    #     import pickle
+    #     print("Saving the model")
+    #     filename = "models/" + name
+    #     pickle.dump(model, open(filename, 'wb')) 
 
-    def neural_net(x_train, y_train):
+    def neural_net(self, x_train, y_train):
         # imports
         import keras
         import tensorflow
@@ -16,12 +21,13 @@ class Classifier:
         from keras.layers import Dense
         # adding layers
         model = Sequential()
-        model.add(Dense(64, input_dim=12, activation='relu'))
+        model.add(Dense(64, input_dim=x_train.shape[1], activation='relu'))
         model.add(Dense(32, activation='relu'))
         model.add(Dense(1, activation="sigmoid"))
         # compiling model
         model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
         model.fit(x_train, y_train, epochs=10)
+        #model.save("models/nn.h5")        
         return model
         
     """Logistic Regression""" 
@@ -31,6 +37,7 @@ class Classifier:
         from sklearn.linear_model import LogisticRegression
         model = LogisticRegression(C = 0.01, class_weight = {1: 0.5, 0: 0.5}, penalty = 'l2', solver = 'saga')
         model.fit(x_train, y_train)
+        #self.save_models(model, "lr.sav")
         return model
 
     """Decision Tree Classifier"""
@@ -63,6 +70,7 @@ class Classifier:
         from sklearn.ensemble import RandomForestClassifier
         model = RandomForestClassifier(n_estimators = 15, max_depth = 19, criterion = "entropy", random_state = 0, min_samples_split = 20)
         model.fit(x_train, y_train)
+        #self.save_models(model, "rf.sav")        
         return model
     
     """SVC Radial"""
@@ -85,6 +93,7 @@ class Classifier:
                                         scale_pos_weight=1, base_score=0.5, random_state=42)
         
         model.fit(x_train, y_train)
+        #self.save_models(model, "xg.sav")        
         return model
 
     """ADA Boost Classification"""
@@ -101,5 +110,4 @@ class Classifier:
         from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
         model = LinearDiscriminantAnalysis()
         model.fit(x_train, y_train)
-        return model
-    
+        return model    
