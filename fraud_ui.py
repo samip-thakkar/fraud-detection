@@ -4,7 +4,9 @@ from flask import Flask, redirect, url_for, render_template, flash, request, ses
 from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField, SelectField, SelectMultipleField
 import secrets
 import ML_models_saved 
+from extract_graph_features import GraphFeatures
 
+gf = GraphFeatures
 
 app = Flask(__name__)
 app.logger.setLevel(DEBUG)
@@ -14,7 +16,10 @@ app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
 
 class InputData(Form):
 
-	graph_features = SelectMultipleField(u'Graph features', choices=[('community', 'Community'), ('pageRank', 'PageRank'), ('degree', 'Degree')])
+	neo4jPassword = TextField('Neo4j DB password', validators=[validators.required()])
+	boltPort = TextField('Neo4j DB bolt port', validators=[validators.required()])
+	httpPort = TextField('Neo4j DB http port', validators=[validators.required()])
+
 	run = SubmitField('Proceed to step 2')
 	customerid = TextField('Customer ID', validators=[validators.required()])
 	merchantid = TextField('Merchant ID', validators=[validators.required()])
@@ -23,14 +28,21 @@ class InputData(Form):
 
 	@app.route('/')
 
+
 	@app.route("/step1", methods = ['GET', 'POST'])
 	def step1():
 		step1 = InputData(request.form)
-		if request.method == 'POST':
-			session['graphFeatures'] = request.form['graph_features']
-			return redirect(url_for('step2'))
 
+		if request.method == 'POST':
+			password = request.form['neo4jPassword']
+			bolt = request.form['boltPort']
+			http = request.form['httpPort']
+			print(gf.extractGraphFeatures(password, bolt, http))
+			if gf.extractGraphFeatures(password, bolt, http) == 'success':
+				return redirect(url_for('step2'))
+			
 		return render_template('step1.html', title='Fraud Detection step 1', form = step1)
+
 
 
 	@app.route('/step2', methods=['GET', 'POST'])
