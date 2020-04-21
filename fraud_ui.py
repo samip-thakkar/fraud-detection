@@ -1,35 +1,51 @@
-from flask import Flask, render_template, flash, request
-from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField, SelectField
+from datetime import datetime
+from logging import DEBUG
+from flask import Flask, redirect, url_for, render_template, flash, request, session
+from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField, SelectField, SelectMultipleField
 import secrets
-import ML_models 
+import ML_models_saved 
 
 
-DEBUG = True
 app = Flask(__name__)
+app.logger.setLevel(DEBUG)
+
+
 app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
 
-
 class InputData(Form):
+
+	graph_features = SelectMultipleField(u'Graph features', choices=[('community', 'Community'), ('pageRank', 'PageRank'), ('degree', 'Degree')])
+	run = SubmitField('Proceed to step 2')
 	customerid = TextField('Customer ID', validators=[validators.required()])
 	merchantid = TextField('Merchant ID', validators=[validators.required()])
 	model = SelectField('Select a model', choices=[('lr', 'Logistic Regression'), ('svm','SVM'), ('rf','Random Forest'), ('nn','Neural Network')])
-	run = SubmitField('Get Results')
+	results = SubmitField('Get Results')
 
-	@app.route("/", methods = ['GET', 'POST'])
-	def input():
-		input = InputData(request.form)
+	@app.route('/')
+
+	@app.route("/step1", methods = ['GET', 'POST'])
+	def step1():
+		step1 = InputData(request.form)
+		if request.method == 'POST':
+			session['graphFeatures'] = request.form['graph_features']
+			return redirect(url_for('step2'))
+
+		return render_template('step1.html', title='Fraud Detection step 1', form = step1)
 
 
+	@app.route('/step2', methods=['GET', 'POST'])
+	def step2():
+		#return session['graphFeatures']
+		step2 = InputData(request.form)
 		if request.method == 'POST':
 			cid = request.form['customerid']
 			mid = request.form['merchantid']
 			ml = request.form['model']
-			ML_models.run_model(cid, mid, ml)
-			print(cid, mid, ml)
+			ML_models_saved.run_model(cid, mid, ml)
+			print(cid, mid, ml, session['graphFeatures'])
 
-		return render_template('input.html', title='Fraud Detection', form = input)
+		return render_template('step2.html', title='Fraud Detection step 2', form = step2)
 
 
-
-if __name__ == "__main__":
-	app.run()		
+if __name__ == '__main__':
+    app.run(debug=True)
