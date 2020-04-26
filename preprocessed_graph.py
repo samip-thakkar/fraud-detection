@@ -6,11 +6,11 @@
 
 #Import libraries
 import pandas as pd
-class Preprocess():
+class PreprocessGraph():
     
     """Read the data"""
     def read_data(self):
-        df = pd.read_csv('data.csv')
+        df = pd.read_csv('data_with_graph_features.csv')
         return df
 
     """Data Visualization"""
@@ -46,7 +46,7 @@ class Preprocess():
         #Describe the data as features and target class as label
         features = df.drop('fraud', axis = 1)
         label = df.fraud
-        features = features[['amount', 'age', 'gender', 'merchant', 'category']]
+        features = features[['amount', 'age', 'gender', 'merchant', 'category', 'merchDegree', 'custDegree', 'merchPageRank', 'custPageRank', 'merchCommunity', 'custCommunity']]
         features = pd.get_dummies(features, columns = ['age', 'gender', 'merchant', 'category'])
         #Label Encoding the data
         return features, label
@@ -72,7 +72,7 @@ class Preprocess():
     def do_mca(self):
         import prince
         x_train, x_test, y_train, y_test = self.scale_data()
-        mca = prince.MCA(n_components = 12, random_state = 42)
+        mca = prince.MCA(n_components = 12, random_state = 42, whiten = False)
         x_train = mca.fit_transform(x_train)
         x_test = mca.fit(x_test)
         return x_train, x_test, y_train, y_test

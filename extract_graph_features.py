@@ -9,7 +9,6 @@ class GraphFeatures:
         import pandas as pd
         df = pd.read_csv("bs140513_032310.csv")
         
-        
         """ADDING GRAPH FEATURES"""
         from py2neo import Graph
         graph = Graph(password = ' ', bolt_port = 7687, http_port = 7474)
@@ -37,12 +36,12 @@ class GraphFeatures:
         for d in data:
             valueDict[d['id']] = {'degree': d['degree'], 'pagerank': d['pagerank'], 'community': d['community']}
         
-        
+        #Append the graph featuers to the dataframe
         df['merchDegree'] = df.merchant.apply(add_degree)
         df['custDegree'] = df.customer.apply(add_degree)
         df['custPageRank'] = df.customer.apply(add_pagerank)
         df['merchPageRank'] = df.merchant.apply(add_pagerank)
         df['merchCommunity'] = df.merchant.apply(add_community)
         df['custCommunity'] = df.customer.apply(add_community)
-        
-        df.to_csv('bs140513_032310.csv')
+        #Save thenew data
+        df.to_csv('data_with_graph_features.csv')

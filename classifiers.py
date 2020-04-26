@@ -78,12 +78,12 @@ class Classifier:
     def xg_boost(self, x_train, y_train):
         print("XG-Boost")
         from xgboost import XGBClassifier
-        model = XGBClassifier(max_depth=6, learning_rate=0.05, n_estimators=400, 
+        """model = XGBClassifier(max_depth=6, learning_rate=0.05, n_estimators=400, 
                                         objective="binary:hinge", booster='gbtree', 
                                         n_jobs=-1, nthread=None, gamma=0, min_child_weight=1, max_delta_step=0, 
                                         subsample=1, colsample_bytree=1, colsample_bylevel=1, reg_alpha=0, reg_lambda=1, 
-                                        scale_pos_weight=1, base_score=0.5, random_state=42)
-        
+                                        scale_pos_weight=1, base_score=0.5, random_state=42)"""
+        model = XGBClassifier(colsample_bytree = 0.7, eta = 0.05, gamma = 0.4, max_depth = 15, min_child_weight = 1)
         model.fit(x_train, y_train)
         return model
 
@@ -102,4 +102,21 @@ class Classifier:
         model = LinearDiscriminantAnalysis()
         model.fit(x_train, y_train)
         return model
+    
+    """Neural Network"""
+    def neural_net(self, x_train, y_train):
+        print("Neural Network")
+        # imports
+        from keras.models import Sequential
+        from keras.layers import Dense
+        # adding layers
+        model = Sequential()
+        model.add(Dense(64, input_dim= 85, activation='relu'))
+        model.add(Dense(32, activation='relu'))
+        model.add(Dense(1, activation="sigmoid"))
+        # compiling model
+        model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+        model.fit(x_train, y_train, epochs=10, class_weight = {0: 1, 1: 100})
+        return model
+
     
