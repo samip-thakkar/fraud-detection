@@ -44,7 +44,7 @@ class Preprocess():
         df['gender'] = df['gender'].apply(lambda x: x[1])
         df['merchant'] = df['merchant'].apply(lambda x: x[1:-1])
         df['category'] = df['category'].apply(lambda x: x[1:-1])
-        #df['customer'] = df['customer'].apply(lambda x: x[2:-1])
+        df['customer'] = df['customer'].apply(lambda x: x[2:-1]).astype(float)
         #Random shuffle
         df = df.sample(frac = 1).reset_index(drop = True)
         return df
@@ -55,7 +55,7 @@ class Preprocess():
         #Describe the data as features and target class as label
         features = df.drop('fraud', axis = 1)
         label = df.fraud
-        features = features[['amount', 'age', 'gender', 'merchant', 'category']]
+        features = features[['customer','amount', 'age', 'gender', 'merchant', 'category']]
         features = pd.get_dummies(features, columns = ['age', 'gender', 'merchant', 'category'])
         #Label Encoding the data
         return features, label
@@ -90,8 +90,7 @@ class Preprocess():
         x_train, x_test, y_train, y_test = self.split_data() 
 
         # Sampling after preprocessing
-        x_train, y_train = sample.smote(x_train, y_train)
-
+        # x_train, y_train = sample.smote(x_train, y_train)
 
         x_train.to_csv("data/train/x_train.csv",index=False)
         x_test.to_csv("data/test/x_test.csv",index=False)

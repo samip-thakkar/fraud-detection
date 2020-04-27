@@ -80,21 +80,24 @@ class InputData(Form):
 
 			transaction_idx = x_test[cid_cols & mid_cols].index
 			x_test = x_test[cid_cols & mid_cols]
-			min_max = MinMaxScaler()
-			x_test_ip = min_max.fit_transform(x_test)
+			#min_max = MinMaxScaler()
+			#x_test_ip = min_max.fit_transform(x_test)
 
 			y_test_ip = y_test.loc[transaction_idx]
 
 			#Get the predicted values
-			y_pred = model.predict(x_test_ip)
+			y_pred = model.predict(x_test)
 
 			amt = x_test['amount'].to_numpy()
+
 			amt = amt.reshape((amt.shape[0],1))
+			
+			y_pred = y_pred.reshape((y_pred.shape[0],1))
 			y_pred[y_pred >= 0.5] = 1
 			y_pred[y_pred < 0.5] = 0
 
 			#Get the model evaluation
-			me.modelevaluation(y_test.to_numpy(), y_pred)
+			#me.modelevaluation(y_test_ip.to_numpy(), y_pred)
 
 			#Display prediction on UI
 			InputData.allres = np.hstack([amt, y_test_ip, y_pred]) 
