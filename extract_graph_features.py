@@ -5,17 +5,14 @@
 """
 class GraphFeatures:
 
-    def extractGraphFeatures(password, bolt, http):
-        import pandas as pd
-        df = pd.read_csv("preprocessed.csv")
-        
+    def extractGraphFeatures(password):
         """ADDING GRAPH FEATURES"""
         from py2neo import Graph
 
-        graph = Graph(password = password, bolt_port = bolt, http_port = http)
+        graph = Graph("http://35.236.81.95:7474/db/data/", user="neo4j", password=password)
+
         try:
             graph.run("Match () Return 1 Limit 1")
-            print('connection succeeded')
         except Exception as e:            
             return "failure: ",e
             
@@ -27,9 +24,9 @@ class GraphFeatures:
         def add_pagerank(x):
             return valueDict[x]['pagerank']
         
-        # Read in a new dataframe and add netork features 
+        # Read in a new dataframe and add network features 
         import pandas as pd
-        df = pd.read_csv("preprocessed.csv")
+        df = pd.read_csv("data/bs140513_032310.csv")
         
         query = """
         MATCH (p:Placeholder)
@@ -49,6 +46,6 @@ class GraphFeatures:
         df['merchCommunity'] = df.merchant.apply(add_community)
         df['custCommunity'] = df.customer.apply(add_community)
         
-        df.to_csv('preprocessed_new.csv')
+        df.to_csv('data/bs140513_032310_graphed.csv')
 
         return "success"

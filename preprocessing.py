@@ -8,6 +8,9 @@
 import pandas as pd
 
 class Preprocess():
+    # columns = []
+    # from sklearn.preprocessing import MinMaxScaler
+    # min_max_scaler = MinMaxScaler()    
     
     """Read the data"""
     def read_data(self):
@@ -57,6 +60,8 @@ class Preprocess():
         #Splitting data into training data and testing data
         from sklearn.model_selection import train_test_split
         x_train, x_test, y_train, y_test = train_test_split(features, label, train_size = 0.8, random_state = 42, stratify = label)
+        # self.columns = features.columns
+        # self.columns = self.columns.insert(self.columns.shape[0], 'fraud')      
         return x_train, x_test, y_train, y_test
         
     """Scale the data to (0,1) as higher range values might overpower the smaller range during the calculation"""
@@ -71,10 +76,10 @@ class Preprocess():
     """Dimensionality reduction using PCA"""
     def do_pca(self):
         x_train, x_test, y_train, y_test = self.scale_data()
-        from sklearn.decomposition import PCA
-        pca = PCA(n_components = 12)
-        x_train = pca.fit_transform(x_train)
-        x_test = pca.transform(x_test)
+        # from sklearn.decomposition import PCA
+        # pca = PCA(n_components = 12)
+        # x_train = pca.fit_transform(x_train)
+        # x_test = pca.transform(x_test)
         return x_train, x_test, y_train, y_test
     
     """Return final preprocessed data"""

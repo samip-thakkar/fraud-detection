@@ -17,16 +17,12 @@ app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
 class InputData(Form):
 
 	neo4jPassword = TextField('Neo4j DB password', validators=[validators.required()])
-	boltPort = TextField('Neo4j DB bolt port', validators=[validators.required()])
-	httpPort = TextField('Neo4j DB http port', validators=[validators.required()])
 
 	run = SubmitField('Proceed to step 2')
 	customerid = TextField('Customer ID', validators=[validators.required()])
 	merchantid = TextField('Merchant ID', validators=[validators.required()])
 	model = SelectField('Select a model', choices=[('lr', 'Logistic Regression'), ('svm','SVM'), ('rf','Random Forest'), ('nn','Neural Network')])
 	results = SubmitField('Get Results')
-
-	@app.route('/')
 
 
 	@app.route("/step1", methods = ['GET', 'POST'])
@@ -35,10 +31,8 @@ class InputData(Form):
 
 		if request.method == 'POST':
 			password = request.form['neo4jPassword']
-			bolt = request.form['boltPort']
-			http = request.form['httpPort']
-			print(gf.extractGraphFeatures(password, bolt, http))
-			if gf.extractGraphFeatures(password, bolt, http) == 'success':
+		
+			if gf.extractGraphFeatures(password) == 'success':
 				return redirect(url_for('step2'))
 			
 		return render_template('step1.html', title='Fraud Detection step 1', form = step1)
