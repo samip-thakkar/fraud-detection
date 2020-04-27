@@ -3,12 +3,18 @@ from logging import DEBUG
 from flask import Flask, redirect, url_for, render_template, flash, request, session
 from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField, SelectField, SelectMultipleField
 import secrets
-import ML_models_saved 
 from extract_graph_features import GraphFeatures
 from preprocessing import Preprocess
+from classifiers import Classifier
+from sample import Sample
+from modelEvaluation import ModelEvaluation
+import pandas as pd 
 
 gf = GraphFeatures
 pre = Preprocess()
+classifier = Classifier()
+sample = Sample()
+me = ModelEvaluation()
 
 app = Flask(__name__)
 app.logger.setLevel(DEBUG)
@@ -23,7 +29,7 @@ class InputData(Form):
 	run = SubmitField('Proceed to step 2')
 	customerid = TextField('Customer ID', validators=[validators.required()])
 	merchantid = TextField('Merchant ID', validators=[validators.required()])
-	model = SelectField('Select a model', choices=[('lr', 'Logistic Regression'), ('svm','SVM'), ('rf','Random Forest'), ('nn','Neural Network')])
+	model = SelectField('Select a model', choices=[('lr', 'Logistic Regression'), ('svm','SVM'), ('xgb', 'XG_Boost'), ('rf','Random Forest'), ('nn','Neural Network')])
 	results = SubmitField('Get Results')
 
 
@@ -46,14 +52,28 @@ class InputData(Form):
 
 	@app.route('/step2', methods=['GET', 'POST'])
 	def step2():
-		#return session['graphFeatures']
 		step2 = InputData(request.form)
+
 		if request.method == 'POST':
 			cid = request.form['customerid']
 			mid = request.form['merchantid']
 			ml = request.form['model']
-			ML_models_saved.run_model(cid, mid, ml)
-			print(cid, mid, ml)
+
+			# load all the data
+			x_train = pd.read_csv('data/train/x_train.csv')  
+			x_test = pd.read_csv('data/test/x_test.csv')  
+			y_train = pd.read_csv('data/train/y_train.csv')  
+			y_test = pd.read_csv('data/test/y_test.csv')  
+
+			# Classify here
+			clf = {'lr': classifier.logistic_regression, 'dt': classifier.decision_tree_classifier, 'rf': classifier.random_forest, 'svm': classifier.svm, 'xgb': classifier.xg_boost, 'nn':classifier.neural_net}
+			model = clf[ml](x_train, y_train)
+
+			#Get the predicted values
+			y_pred = model.predict(x_test)
+
+			#Get the model evaluation
+			me.modelevaluation(y_test.to_numpy(), y_pred)
 
 		return render_template('step2.html', title='Fraud Detection step 2', form = step2)
 

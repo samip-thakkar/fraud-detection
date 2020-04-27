@@ -7,6 +7,11 @@
 #Import libraries
 import pandas as pd
 import numpy as np 
+from sample import Sample
+
+sample = Sample()
+
+
 class Preprocess():
     # columns = []
     # from sklearn.preprocessing import MinMaxScaler
@@ -84,10 +89,14 @@ class Preprocess():
     def preprocess_data_ui(self):
         x_train, x_test, y_train, y_test = self.split_data() 
 
+        # Sampling after preprocessing
+        x_train, y_train = sample.smote(x_train, y_train)
+
+
         x_train.to_csv("data/train/x_train.csv",index=False)
-        x_train.to_csv("data/train/x_test.csv",index=False)
-        x_train.to_csv("data/train/y_train.csv",index=False)
-        x_train.to_csv("data/train/y_test.csv",index=False)
+        x_test.to_csv("data/test/x_test.csv",index=False)
+        y_train.to_csv("data/train/y_train.csv",index=False)
+        y_test.to_csv("data/test/y_test.csv",index=False)
 
         '''
         np.savetxt("data/train/x_train.npy", x_train)
@@ -95,5 +104,5 @@ class Preprocess():
         np.savetxt("data/train/y_train.npy", y_train)
         np.savetxt("data/test/y_test.npy", y_test)
         '''
-        
+
         return "success"
