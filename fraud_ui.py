@@ -46,6 +46,12 @@ class InputData(Form):
 				# do original dataset preprocessing here
 				if pre.preprocess_data_ui() == 'success':
 					# TODO: show feedback message
+
+					x_test = pd.read_csv('data/test/x_test.csv')  
+					y_test = pd.read_csv('data/test/y_test.csv')  
+					x_test_ip = x_test.loc[y_test["fraud"] == 1]
+					x_test_ip.to_csv("data/validation/validation.csv",index=False)
+
 					return redirect(url_for('step2'))
 			
 		return render_template('step1.html', title='Fraud Detection step 1', form = step1)
@@ -68,21 +74,22 @@ class InputData(Form):
 			y_test = pd.read_csv('data/test/y_test.csv')  
 
 			
-			step2.results.data = "Classification results for transactions between Customer ID " + cid + " and Merchant ID" + mid +":"		
+			step2.results.data = "Classification results for transactions between Customer ID " + cid + " and Merchant ID " + mid +":"		
 			mid = "merchant_" + mid	
+
 
 			# Classify here
 			clf = {'lr': classifier.logistic_regression, 'dt': classifier.decision_tree_classifier, 'rf': classifier.random_forest, 'svm': classifier.svm, 'xgb': classifier.xg_boost, 'nn':classifier.neural_net}
 			model = clf[ml](x_train, y_train)
+
+			print("-----")
 
 			cid_cols = x_test["customer"] == float(cid)
 			mid_cols = x_test[mid] == 1
 
 			transaction_idx = x_test[cid_cols & mid_cols].index
 			x_test = x_test[cid_cols & mid_cols]
-			#min_max = MinMaxScaler()
-			#x_test_ip = min_max.fit_transform(x_test)
-
+			
 			y_test_ip = y_test.loc[transaction_idx]
 
 			#Get the predicted values
@@ -91,7 +98,7 @@ class InputData(Form):
 			amt = x_test['amount'].to_numpy()
 
 			amt = amt.reshape((amt.shape[0],1))
-			
+
 			y_pred = y_pred.reshape((y_pred.shape[0],1))
 			y_pred[y_pred >= 0.5] = 1
 			y_pred[y_pred < 0.5] = 0

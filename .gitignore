@@ -20,6 +20,7 @@ __pycache__/
 data/test/
 data/train/
 evaluations/
+validation/
 # Coverage reports
 htmlcov/
 .coverage
