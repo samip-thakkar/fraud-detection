@@ -6,15 +6,11 @@
 
 #Import libraries
 import pandas as pd
-import numpy as np 
-class Preprocess():
-    # columns = []
-    # from sklearn.preprocessing import MinMaxScaler
-    # min_max_scaler = MinMaxScaler()    
+class PreprocessGraph():
     
     """Read the data"""
     def read_data(self):
-        df = pd.read_csv('data/bs140513_032310.csv')
+        df = pd.read_csv('data_with_graph_features.csv')
         return df
 
     """Data Visualization"""
@@ -32,7 +28,7 @@ class Preprocess():
     def data_cleaning(self):
         df = self.data_visualization()
         #Drop unnecessary columns
-        df = df.drop(['customer','zipcodeOri', 'zipMerchant'], axis = 1)
+        df = df.drop(['customer', 'zipcodeOri', 'zipMerchant', 'step'], axis = 1)
         
         #Clean the data
         df['age'] = df['age'].apply(lambda x: x[1]).replace('U', 7).astype(int)
@@ -50,7 +46,7 @@ class Preprocess():
         #Describe the data as features and target class as label
         features = df.drop('fraud', axis = 1)
         label = df.fraud
-        features = features[['amount', 'age', 'gender', 'merchant', 'category']]
+        features = features[['amount', 'age', 'gender', 'merchant', 'category', 'merchDegree', 'custDegree', 'merchPageRank', 'custPageRank', 'merchCommunity', 'custCommunity']]
         features = pd.get_dummies(features, columns = ['age', 'gender', 'merchant', 'category'])
         #Label Encoding the data
         return features, label
@@ -61,8 +57,6 @@ class Preprocess():
         #Splitting data into training data and testing data
         from sklearn.model_selection import train_test_split
         x_train, x_test, y_train, y_test = train_test_split(features, label, train_size = 0.8, random_state = 42, stratify = label)
-        # self.columns = features.columns
-        # self.columns = self.columns.insert(self.columns.shape[0], 'fraud')      
         return x_train, x_test, y_train, y_test
         
     """Scale the data to (0,1) as higher range values might overpower the smaller range during the calculation"""
@@ -74,21 +68,16 @@ class Preprocess():
         x_test['amount'] = min_max_scaler.fit_transform(x_test['amount'].values.reshape(-1, 1))
         return x_train, x_test, y_train, y_test
     
+    """Dimensionality reduction using MCA"""
+    def do_mca(self):
+        import prince
+        x_train, x_test, y_train, y_test = self.scale_data()
+        mca = prince.MCA(n_components = 12, random_state = 42, whiten = False)
+        x_train = mca.fit_transform(x_train)
+        x_test = mca.fit(x_test)
+        return x_train, x_test, y_train, y_test
     
     """Return final preprocessed data"""
     def preprocessed_data(self):
-        x_train, x_test, y_train, y_test = self.scale_data() 
-        
-        '''
-        x_train.to_csv("data/train/x_train.csv",index=False)
-        x_test.to_csv("data/test/x_test.csv",index=False)
-        y_train.to_csv("data/train/y_train.csv",index=False)
-        y_test.to_csv("data/test/y_test.csv",index=False)
-        '''
-        
-        np.savetxt("data/train/x_train.csv", x_train, delimiter=",")
-        np.savetxt("data/test/x_test.csv", x_test, delimiter=",")
-        np.savetxt("data/train/y_train.csv", y_train, delimiter=",")
-        np.savetxt("data/test/y_test.csv", y_test, delimiter=",")
-        
+        x_train, x_test, y_train, y_test = self.do_mca() 
         return x_train, x_test, y_train, y_test
