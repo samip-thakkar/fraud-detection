@@ -25,7 +25,7 @@ me = ModelEvaluation()
 choice = int(input("Enter 0 for data without graph features and 1 for graph features: "))
 #Preprocess the data
 if choice == 0:
-    x_train, x_test, y_train, y_test = pp.do_mca()
+    x_train, x_test, y_train, y_test = pp.preprocessed_data()
 else:
     print("Extracting graph features: ")
     x_train, x_test, y_train, y_test = ppg.scale_data()

@@ -25,7 +25,7 @@ class Preprocess():
         print('Class 0:', target_count[0])
         print('Class 1:', target_count[1])
         print('Proportion:', round(target_count[0] / target_count[1], 2), ': 1')
-        target_count.plot(kind='bar', title='Count (target)')
+        #target_count.plot(kind='bar', title='Count (target)')
         return df
     
     """Data Cleaning"""
@@ -77,18 +77,23 @@ class Preprocess():
     
     """Return final preprocessed data"""
     def preprocessed_data(self):
-        x_train, x_test, y_train, y_test = self.scale_data() 
-        
-        '''
-        x_train.to_csv("data/train/x_train.csv",index=False)
-        x_test.to_csv("data/test/x_test.csv",index=False)
-        y_train.to_csv("data/train/y_train.csv",index=False)
-        y_test.to_csv("data/test/y_test.csv",index=False)
-        '''
-        
-        np.savetxt("data/train/x_train.csv", x_train, delimiter=",")
-        np.savetxt("data/test/x_test.csv", x_test, delimiter=",")
-        np.savetxt("data/train/y_train.csv", y_train, delimiter=",")
-        np.savetxt("data/test/y_test.csv", y_test, delimiter=",")
-        
+        x_train, x_test, y_train, y_test = self.scale_data()        
         return x_train, x_test, y_train, y_test
+
+    """Return final preprocessed data"""
+    def preprocess_data_ui(self):
+        x_train, x_test, y_train, y_test = self.split_data() 
+
+        x_train.to_csv("data/train/x_train.csv",index=False)
+        x_train.to_csv("data/train/x_test.csv",index=False)
+        x_train.to_csv("data/train/y_train.csv",index=False)
+        x_train.to_csv("data/train/y_test.csv",index=False)
+
+        '''
+        np.savetxt("data/train/x_train.npy", x_train)
+        np.savetxt("data/test/x_test.npy", x_test)
+        np.savetxt("data/train/y_train.npy", y_train)
+        np.savetxt("data/test/y_test.npy", y_test)
+        '''
+        
+        return "success"

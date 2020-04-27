@@ -5,8 +5,10 @@ from wtforms import Form, TextField, TextAreaField, validators, StringField, Sub
 import secrets
 import ML_models_saved 
 from extract_graph_features import GraphFeatures
+from preprocessing import Preprocess
 
 gf = GraphFeatures
+pre = Preprocess()
 
 app = Flask(__name__)
 app.logger.setLevel(DEBUG)
@@ -33,7 +35,10 @@ class InputData(Form):
 			password = request.form['neo4jPassword']
 		
 			if gf.extractGraphFeatures(password) == 'success':
-				return redirect(url_for('step2'))
+				# do original dataset preprocessing here
+				if pre.preprocess_data_ui() == 'success':
+					# TODO: show feedback message
+					return redirect(url_for('step2'))
 			
 		return render_template('step1.html', title='Fraud Detection step 1', form = step1)
 
