@@ -6,6 +6,12 @@
 
 #Import libraries
 import pandas as pd
+import numpy as np 
+from sample import Sample
+
+sample = Sample()
+
+
 class Preprocess():
     # columns = []
     # from sklearn.preprocessing import MinMaxScaler
@@ -13,7 +19,7 @@ class Preprocess():
     
     """Read the data"""
     def read_data(self):
-        df = pd.read_csv('data.csv')
+        df = pd.read_csv('data/bs140513_032310.csv')
         return df
 
     """Data Visualization"""
@@ -24,14 +30,14 @@ class Preprocess():
         print('Class 0:', target_count[0])
         print('Class 1:', target_count[1])
         print('Proportion:', round(target_count[0] / target_count[1], 2), ': 1')
-        target_count.plot(kind='bar', title='Count (target)')
+        #target_count.plot(kind='bar', title='Count (target)')
         return df
     
     """Data Cleaning"""
     def data_cleaning(self):
         df = self.data_visualization()
         #Drop unnecessary columns
-        df = df.drop(['customer', 'zipcodeOri', 'zipMerchant', 'step'], axis = 1)
+        df = df.drop(['zipcodeOri', 'zipMerchant'], axis = 1)
         
         #Clean the data
         df['age'] = df['age'].apply(lambda x: x[1]).replace('U', 7).astype(int)
@@ -73,17 +79,30 @@ class Preprocess():
         x_test['amount'] = min_max_scaler.fit_transform(x_test['amount'].values.reshape(-1, 1))
         return x_train, x_test, y_train, y_test
     
-    """Dimensionality reduction using MCA"""
-    def do_mca(self):
-        import prince
-        x_train, x_test, y_train, y_test = self.scale_data()
-        # from sklearn.decomposition import PCA
-        # pca = PCA(n_components = 12)
-        # x_train = pca.fit_transform(x_train)
-        # x_test = pca.transform(x_test)
-        return x_train, x_test, y_train, y_test
     
     """Return final preprocessed data"""
     def preprocessed_data(self):
-        x_train, x_test, y_train, y_test = self.do_mca() 
+        x_train, x_test, y_train, y_test = self.scale_data()        
         return x_train, x_test, y_train, y_test
+
+    """Return final preprocessed data"""
+    def preprocess_data_ui(self):
+        x_train, x_test, y_train, y_test = self.split_data() 
+
+        # Sampling after preprocessing
+        x_train, y_train = sample.smote(x_train, y_train)
+
+
+        x_train.to_csv("data/train/x_train.csv",index=False)
+        x_test.to_csv("data/test/x_test.csv",index=False)
+        y_train.to_csv("data/train/y_train.csv",index=False)
+        y_test.to_csv("data/test/y_test.csv",index=False)
+
+        '''
+        np.savetxt("data/train/x_train.npy", x_train)
+        np.savetxt("data/test/x_test.npy", x_test)
+        np.savetxt("data/train/y_train.npy", y_train)
+        np.savetxt("data/test/y_test.npy", y_test)
+        '''
+
+        return "success"
