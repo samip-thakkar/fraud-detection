@@ -6,6 +6,7 @@
 class GraphFeatures:
 
     def extractGraphFeatures(password):
+
         """ADDING GRAPH FEATURES"""
         from py2neo import Graph
 
@@ -38,7 +39,7 @@ class GraphFeatures:
         for d in data:
             valueDict[d['id']] = {'degree': d['degree'], 'pagerank': d['pagerank'], 'community': d['community']}
         
-        
+        #Append the graph featuers to the dataframe
         df['merchDegree'] = df.merchant.apply(add_degree)
         df['custDegree'] = df.customer.apply(add_degree)
         df['custPageRank'] = df.customer.apply(add_pagerank)
@@ -49,3 +50,4 @@ class GraphFeatures:
         df.to_csv('data/bs140513_032310_graphed.csv',index=False)
 
         return "success"
+
