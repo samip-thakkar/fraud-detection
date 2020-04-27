@@ -37,7 +37,7 @@ class Preprocess():
     def data_cleaning(self):
         df = self.data_visualization()
         #Drop unnecessary columns
-        df = df.drop(['customer','zipcodeOri', 'zipMerchant'], axis = 1)
+        df = df.drop(['zipcodeOri', 'zipMerchant'], axis = 1)
         
         #Clean the data
         df['age'] = df['age'].apply(lambda x: x[1]).replace('U', 7).astype(int)

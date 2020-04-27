@@ -9,6 +9,8 @@ from classifiers import Classifier
 from sample import Sample
 from modelEvaluation import ModelEvaluation
 import pandas as pd 
+from sklearn.preprocessing import MinMaxScaler
+import numpy as np 
 
 gf = GraphFeatures
 pre = Preprocess()
@@ -65,15 +67,37 @@ class InputData(Form):
 			y_train = pd.read_csv('data/train/y_train.csv')  
 			y_test = pd.read_csv('data/test/y_test.csv')  
 
+			
+			step2.results.data = "Classification results for transactions between Customer ID " + cid + " and Merchant ID" + mid +":"		
+			mid = "merchant_" + mid	
+
 			# Classify here
 			clf = {'lr': classifier.logistic_regression, 'dt': classifier.decision_tree_classifier, 'rf': classifier.random_forest, 'svm': classifier.svm, 'xgb': classifier.xg_boost, 'nn':classifier.neural_net}
 			model = clf[ml](x_train, y_train)
 
+			cid_cols = x_test["customer"] == float(cid)
+			mid_cols = x_test[mid] == 1
+
+			transaction_idx = x_test[cid_cols & mid_cols].index
+			x_test = x_test[cid_cols & mid_cols]
+			min_max = MinMaxScaler()
+			x_test_ip = min_max.fit_transform(x_test)
+
+			y_test_ip = y_test.loc[transaction_idx]
+
 			#Get the predicted values
-			y_pred = model.predict(x_test)
+			y_pred = model.predict(x_test_ip)
+
+			amt = x_test['amount'].to_numpy()
+			amt = amt.reshape((amt.shape[0],1))
+			y_pred[y_pred >= 0.5] = 1
+			y_pred[y_pred < 0.5] = 0
 
 			#Get the model evaluation
 			me.modelevaluation(y_test.to_numpy(), y_pred)
+
+			#Display prediction on UI
+			InputData.allres = np.hstack([amt, y_test_ip, y_pred]) 
 
 		return render_template('step2.html', title='Fraud Detection step 2', form = step2)
 
