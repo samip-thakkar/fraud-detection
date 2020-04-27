@@ -1,0 +1,23 @@
+
+<title>Fraud Detection using Graph Databases</title>
+<link rel="stylesheet" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+<div class="p-5">
+	<h1>Fraud Detection using Graph Databases Step 1: Enter Neo4j credentials</h1>
+
+	
+	<form action="" method="post" novalidate>
+    	<div class="row">
+		        <p>
+		            {{ form.neo4jPassword.label }}
+		            {{ form.neo4jPassword(class_="form-control") }}
+		        </p>
+
+    	</div>
+   
+
+        <p>{{ form.run(class_="btn btn-success") }}</p>
+    </form>
+
+</div>

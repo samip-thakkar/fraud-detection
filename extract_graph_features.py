@@ -5,14 +5,17 @@
 """
 class GraphFeatures:
 
-    def extractGraphFeatures(self):
-        import pandas as pd
-        df = pd.read_csv("bs140513_032310.csv")
-        
+    def extractGraphFeatures(password):
+
         """ADDING GRAPH FEATURES"""
         from py2neo import Graph
-        graph = Graph(password = ' ', bolt_port = 7687, http_port = 7474)
-        
+
+        graph = Graph("http://35.236.81.95:7474/db/data/", user="neo4j", password=password)
+
+        try:
+            graph.run("Match () Return 1 Limit 1")
+        except Exception as e:            
+            return "failure: ",e
             
         # Helper functions to add network features to input dataframe 
         def add_degree(x):
@@ -22,9 +25,9 @@ class GraphFeatures:
         def add_pagerank(x):
             return valueDict[x]['pagerank']
         
-        # Read in a new dataframe and add netork features 
+        # Read in a new dataframe and add network features 
         import pandas as pd
-        df = pd.read_csv("bs140513_032310.csv")
+        df = pd.read_csv("data/bs140513_032310.csv")
         
         query = """
         MATCH (p:Placeholder)
@@ -43,5 +46,8 @@ class GraphFeatures:
         df['merchPageRank'] = df.merchant.apply(add_pagerank)
         df['merchCommunity'] = df.merchant.apply(add_community)
         df['custCommunity'] = df.customer.apply(add_community)
-        #Save thenew data
-        df.to_csv('data_with_graph_features.csv')
+        
+        df.to_csv('data/bs140513_032310_graphed.csv',index=False)
+
+        return "success"
+
