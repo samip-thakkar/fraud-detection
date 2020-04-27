@@ -48,7 +48,7 @@ class InputData(Form):
 			mid = request.form['merchantid']
 			ml = request.form['model']
 			ML_models_saved.run_model(cid, mid, ml)
-			print(cid, mid, ml, session['graphFeatures'])
+			print(cid, mid, ml)
 
 		return render_template('step2.html', title='Fraud Detection step 2', form = step2)
 

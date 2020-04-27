@@ -6,7 +6,7 @@
 
 #Import libraries
 import pandas as pd
-
+import numpy as np 
 class Preprocess():
     # columns = []
     # from sklearn.preprocessing import MinMaxScaler
@@ -14,7 +14,7 @@ class Preprocess():
     
     """Read the data"""
     def read_data(self):
-        df = pd.read_csv('bs140513_032310.csv')
+        df = pd.read_csv('data/bs140513_032310.csv')
         return df
 
     """Data Visualization"""
@@ -32,7 +32,7 @@ class Preprocess():
     def data_cleaning(self):
         df = self.data_visualization()
         #Drop unnecessary columns
-        df = df.drop(['zipcodeOri', 'zipMerchant', 'step'], axis = 1)
+        df = df.drop(['zipcodeOri', 'zipMerchant'], axis = 1)
         
         #Clean the data
         df['age'] = df['age'].apply(lambda x: x[1]).replace('U', 7).astype(int)
@@ -73,16 +73,21 @@ class Preprocess():
         x_test = min_max_scaler.fit_transform(x_test)
         return x_train, x_test, y_train, y_test
     
-    """Dimensionality reduction using PCA"""
-    def do_pca(self):
-        x_train, x_test, y_train, y_test = self.scale_data()
-        # from sklearn.decomposition import PCA
-        # pca = PCA(n_components = 12)
-        # x_train = pca.fit_transform(x_train)
-        # x_test = pca.transform(x_test)
-        return x_train, x_test, y_train, y_test
     
     """Return final preprocessed data"""
     def preprocessed_data(self):
-        x_train, x_test, y_train, y_test = self.do_pca() 
+        x_train, x_test, y_train, y_test = self.scale_data() 
+        
+        '''
+        x_train.to_csv("data/train/x_train.csv",index=False)
+        x_test.to_csv("data/test/x_test.csv",index=False)
+        y_train.to_csv("data/train/y_train.csv",index=False)
+        y_test.to_csv("data/test/y_test.csv",index=False)
+        '''
+        
+        np.savetxt("data/train/x_train.csv", x_train, delimiter=",")
+        np.savetxt("data/test/x_test.csv", x_test, delimiter=",")
+        np.savetxt("data/train/y_train.csv", y_train, delimiter=",")
+        np.savetxt("data/test/y_test.csv", y_test, delimiter=",")
+        
         return x_train, x_test, y_train, y_test

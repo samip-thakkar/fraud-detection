@@ -17,6 +17,8 @@ _mailinglist
 docs/_build/
 .vscode
 __pycache__/
+data/test/
+data/train/
 # Coverage reports
 htmlcov/
 .coverage
