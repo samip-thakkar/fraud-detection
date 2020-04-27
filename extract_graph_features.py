@@ -46,6 +46,6 @@ class GraphFeatures:
         df['merchCommunity'] = df.merchant.apply(add_community)
         df['custCommunity'] = df.customer.apply(add_community)
         
-        df.to_csv('data/bs140513_032310_graphed.csv')
+        df.to_csv('data/bs140513_032310_graphed.csv',index=False)
 
         return "success"
