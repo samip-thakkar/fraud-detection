@@ -51,7 +51,7 @@ class InputData(Form):
 					y_test = pd.read_csv('data/test/y_test.csv')  
 					x_test_ip = x_test.loc[y_test["fraud"] == 1]
 					x_test_ip.to_csv("data/validation/validation.csv",index=False)
-
+					
 					return redirect(url_for('step2'))
 			
 		return render_template('step1.html', title='Fraud Detection step 1', form = step1)
@@ -73,13 +73,13 @@ class InputData(Form):
 			y_train = pd.read_csv('data/train/y_train.csv')  
 			y_test = pd.read_csv('data/test/y_test.csv')  
 
-			
 			step2.results.data = "Classification results for transactions between Customer ID " + cid + " and Merchant ID " + mid +":"		
 			mid = "merchant_" + mid	
 
-
 			# Classify here
 			clf = {'lr': classifier.logistic_regression, 'dt': classifier.decision_tree_classifier, 'rf': classifier.random_forest, 'svm': classifier.svm, 'xgb': classifier.xg_boost, 'nn':classifier.neural_net}
+			# removing customer id before classification; unwanted
+			# x_train_ip = x_train.drop(['customer'], axis = 1)
 			model = clf[ml](x_train, y_train)
 
 			print("-----")
