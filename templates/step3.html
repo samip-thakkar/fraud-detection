@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Evaluation Metrics</title>
+  </head>
+  <body>
+    <div class="container" style="margin-top: 50px;">
+        <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Metric</th>
+                <th scope="col">Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Specificity</th>
+                <td>{{form.evalMetric.specificity}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Accuracy</th>
+                <td>{{form.evalMetric.accuracy}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Balanced Accuracy</th>
+                <td>{{form.evalMetric.balanced_accuracy}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Precision</th>
+                <td>{{form.evalMetric.precision}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Recall</th>
+                <td>{{form.evalMetric.recall}}</td>
+              </tr>
+              <tr>
+                <th scope="row">F1 Score Macro</th>
+                <td>{{form.evalMetric.f1_score_macro}}</td>
+              </tr>
+              <tr>
+                <th scope="row">F1 Score Micro</th>
+                <td>{{form.evalMetric.f1_score_micro}}</td>
+              </tr>
+              <tr>
+                <th scope="row">F Beta Score</th>
+                <td>{{form.evalMetric.f_beta_score}}</td>
+              </tr>
+              <tr>
+                <th scope="row">AUC Score</th>
+                <td>{{form.evalMetric.auc_score}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Zero One Loss</th>
+                <td>{{form.evalMetric.zero_one_loss}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Matthews Correlation Coefficient</th>
+                <td>{{form.evalMetric.matthews_corrcoef}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Brier Score</th>
+                <td>{{form.evalMetric.brier_score}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Cohen Keppa Score</th>
+                <td>{{form.evalMetric.cohen_keppa_score}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Fraud Precision</th>
+                <td>{{form.evalMetric.fraud_precision}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Fraud Recall</th>
+                <td>{{form.evalMetric.fraud_recall}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Fraud F1 Score</th>
+                <td>{{form.evalMetric.fraud_f1_score}}</td>
+              </tr>
+            </tbody>
+        </table>
+    </div>
+    
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>

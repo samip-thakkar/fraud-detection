@@ -51,7 +51,7 @@
 					{% endfor %}
 					<p>
 		        </div>
-		    </div>     	
+			</div>    
 	    </form>
 
 	<!-- 	<form action="" method="get">
@@ -64,6 +64,12 @@
 		<input type="text" class="form-control" id="customerid" name="customerid"></div>
 		<p class="form-control">{{ form.run() }}</p>     -->
 
+	</div>
+
+	<div class="p-5">
+		<form action="/step3" method="GET">
+			<button type="submit" class= "btn btn-success">Show Evaluation Metrics</button>
+		</form>
 	</div>
 
 </html>
