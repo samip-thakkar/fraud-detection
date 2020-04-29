@@ -17,10 +17,10 @@ _mailinglist
 docs/_build/
 .vscode
 __pycache__/
-data/test/
-data/train/
-evaluations/
-validation/
+data/test/*
+data/train/*
+evaluations/*
+data/validation/*
 # Coverage reports
 htmlcov/
 .coverage
