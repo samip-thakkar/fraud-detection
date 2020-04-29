@@ -132,10 +132,10 @@ class InputData(Form):
 	@app.route('/step3', methods=['GET', 'POST'])
 	def step3():
 		step3 = InputData(request.form)
-		if request.method == 'GET':
+		if request.method == 'POST':
 
 			# Opening JSON file
-			f = open('evaluations/model_evaluation.json', )
+			f = open('evaluations/model_evaluation.json')
 
 			# returns JSON object as
 			# a dictionary

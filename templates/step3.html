@@ -22,23 +22,23 @@
             <tbody>
               <tr>
                 <th scope="row">Specificity</th>
-                <td>{{form.evalMetric.specificity}}</td>
+                <td>{{ form.evalMetric.specificity * 100 | round(1) }} %</td>
               </tr>
               <tr>
                 <th scope="row">Accuracy</th>
-                <td>{{form.evalMetric.accuracy}}</td>
+                <td>{{form.evalMetric.accuracy * 100 | round(1) }} %</td>
               </tr>
               <tr>
                 <th scope="row">Balanced Accuracy</th>
-                <td>{{form.evalMetric.balanced_accuracy}}</td>
+                <td>{{form.evalMetric.balanced_accuracy * 100 | round(1) }} %</td>
               </tr>
               <tr>
                 <th scope="row">Precision</th>
-                <td>{{form.evalMetric.precision}}</td>
+                <td>{{form.evalMetric.precision * 100 | round(1) }} %</td>
               </tr>
               <tr>
                 <th scope="row">Recall</th>
-                <td>{{form.evalMetric.recall}}</td>
+                <td>{{form.evalMetric.recall * 100 | round(1) }} %</td>
               </tr>
               <tr>
                 <th scope="row">F1 Score Macro</th>
@@ -74,11 +74,11 @@
               </tr>
               <tr>
                 <th scope="row">Fraud Precision</th>
-                <td>{{form.evalMetric.fraud_precision}}</td>
+                <td>{{form.evalMetric.fraud_precision * 100 | round(1) }} %</td>
               </tr>
               <tr>
                 <th scope="row">Fraud Recall</th>
-                <td>{{form.evalMetric.fraud_recall}}</td>
+                <td>{{form.evalMetric.fraud_recall * 100 | round(1) }} %</td>
               </tr>
               <tr>
                 <th scope="row">Fraud F1 Score</th>

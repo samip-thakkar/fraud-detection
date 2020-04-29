@@ -39,9 +39,10 @@ class ModelEvaluation():
         
         data['evaluation_data'].append({
             'specificity': TN / (TN + FP),
-            'accuracy': metrics.accuracy_score(y_test, y_pred),
+            'fraud_precision': metrics.classification_report(y_test, y_pred, output_dict=True)['1']['precision'],
+            'fraud_recall': metrics.classification_report(y_test, y_pred, output_dict=True)['1']['recall'],
+            'fraud_f1_score': metrics.classification_report(y_test, y_pred, output_dict=True)['1']['f1-score'],
             'balanced_accuracy': metrics.balanced_accuracy_score(y_test, y_pred, sample_weight = None),
-            'precision': metrics.precision_score(y_test, y_pred),
             'recall': metrics.recall_score(y_test, y_pred),
             'f1_score_macro': metrics.f1_score(y_test, y_pred, average='macro'),
             'f1_score_micro': metrics.f1_score(y_test, y_pred, average='micro'),
@@ -50,10 +51,7 @@ class ModelEvaluation():
             'zero_one_loss': metrics.zero_one_loss(y_test, y_pred),
             'matthews_corrcoef': metrics.matthews_corrcoef(y_test, y_pred),
             'brier_score': metrics.brier_score_loss(y_test, y_pred),
-            'cohen_keppa_score': metrics.cohen_kappa_score(y_test, y_pred),
-            'fraud_precision': metrics.classification_report(y_test, y_pred, output_dict=True)['1']['precision'],
-            'fraud_recall': metrics.classification_report(y_test, y_pred, output_dict=True)['1']['recall'],
-            'fraud_f1_score': metrics.classification_report(y_test, y_pred, output_dict=True)['1']['f1-score']
+            'cohen_keppa_score': metrics.cohen_kappa_score(y_test, y_pred)
         })
 
         with open('evaluations/model_evaluation.json', 'w') as outfile:
