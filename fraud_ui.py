@@ -1,7 +1,7 @@
 from datetime import datetime
 from logging import DEBUG
 from flask import Flask, redirect, url_for, render_template, flash, request, session
-from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField, SelectField, SelectMultipleField
+from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField, SelectField, SelectMultipleField, PasswordField
 import secrets
 from extract_graph_features import GraphFeatures
 from preprocessing import Preprocess
@@ -26,7 +26,7 @@ app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
 
 class InputData(Form):
 
-	neo4jPassword = TextField('Neo4j DB password', validators=[validators.required()])
+	neo4jPassword = PasswordField('Neo4j DB password', validators=[validators.required()])
 
 	run = SubmitField('Proceed to step 2')
 	customerid = TextField('Customer ID', validators=[validators.required()])
@@ -44,13 +44,30 @@ class InputData(Form):
 		
 			if gf.extractGraphFeatures(password) == 'success':
 				# do original dataset preprocessing here
+				
 				if pre.preprocess_data_ui() == 'success':
 					# TODO: show feedback message
 
 					x_test = pd.read_csv('data/test/x_test.csv')  
 					y_test = pd.read_csv('data/test/y_test.csv')  
 					x_test_ip = x_test.loc[y_test["fraud"] == 1]
-					x_test_ip.to_csv("data/validation/validation.csv",index=False)
+
+					######## Customers ##########
+					customers = x_test_ip[x_test_ip.columns[0]]
+					customers = customers.apply(np.int64)
+
+					######## Amount #############
+					amount = x_test_ip[x_test_ip.columns[1]]
+
+					######## Merchants ###########
+					merchants = x_test_ip[x_test_ip.columns[4:]]
+					merchants = merchants.idxmax(axis=1)
+					merchants = merchants.replace('merchant_', '', regex=True)
+
+					result = pd.concat([customers, merchants, amount], axis=1)
+					result.columns = ['CustomerID', 'MerchantID', 'Amount']
+
+					result.to_csv("data/validation/validation.csv",index=False)
 					
 					return redirect(url_for('step2'))
 			
