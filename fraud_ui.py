@@ -10,7 +10,8 @@ from sample import Sample
 from modelEvaluation import ModelEvaluation
 import pandas as pd 
 from sklearn.preprocessing import MinMaxScaler
-import numpy as np 
+import numpy as np
+import json
 
 gf = GraphFeatures
 pre = Preprocess()
@@ -127,6 +128,27 @@ class InputData(Form):
 			InputData.allres = np.hstack([amt, y_test_ip, y_pred]) 
 
 		return render_template('step2.html', title='Fraud Detection step 2', form = step2)
+
+	@app.route('/step3', methods=['GET', 'POST'])
+	def step3():
+		step3 = InputData(request.form)
+		if request.method == 'GET':
+
+			# Opening JSON file
+			f = open('evaluations/model_evaluation.json', )
+
+			# returns JSON object as
+			# a dictionary
+			data = json.load(f)
+
+			# Iterating through the json
+			# list
+			InputData.evalMetric = data['evaluation_data'][0]
+
+			# Closing file
+			f.close()
+
+		return render_template('step3.html', title='Fraud Detection step 3', form=step3)
 
 
 if __name__ == '__main__':
