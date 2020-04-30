@@ -1,4 +1,4 @@
-# Fraud Detection using Machine learning and Graph Database
+# Fraud Detection using Machine learning and Graph Databases
 
 ## Why graph databases?
 
@@ -29,4 +29,6 @@ Our client side application is implemented in Flask framework which can interact
 
 ## Execution 
 
+1) Please clone this repository in the local environment.
+2) You can download all the requisite libraries by executing the command : `pip install -r requirements.txt`
 
