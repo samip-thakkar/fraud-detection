@@ -1,75 +1,119 @@
 <!DOCTYPE html>
 <html>
-	<title>Fraud Detection using Graph Databases</title>
-	<link rel="stylesheet" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-
-	<div class="p-5">
-		<h1 class = "mb-4">Fraud Detection using Graph Databases</h1>
-		<br>
-
-	    <form action="" method="post" novalidate>
-
-	    	<div class="row">
-			    <div class="form-group mx-sm-3 mb-2">    
-		            {{ form.customerid.label }}
-		            {{ form.customerid(class_="form-control") }}
-	        	</div>
-
-	        	<div class="form-group mx-sm-3 mb-2">
-		            {{ form.merchantid.label }}
-		            {{ form.merchantid(class_="form-control") }}
-		        </div>  
-
-	        	<div class="form-group mx-sm-3 mb-2">
-		            {{ form.model.label }}
-		            {{ form.model(class_="form-control") }}
-		            
-		        </div>
-
-		        <div class="form-group mx-lg-4 pt-4  mt-2">	        	
-		        	{{ form.run(class_="btn btn-success ") }}
-		        </div>
-
-	    	</div>
-	    	<div id = "resultsDisplay" class ="row"> 
-	 	        <div class="form-group mx-lg-4 pt-4  mt-2 white-space: pre-wrap;">
-	 	        	<h4 class="text-success"> {{form.results.data}} </h4>
-		        </div>
-		        <div>
-		        	<p>
-					{% for i in form.allres %}
-						<ul>
-							<li>
-					    		Transaction amount: {{ i[0] }}
-					    	    was a  {% if i[1] == 0 %} non-fradulent transaction. {% endif %}
-					    	    		 {% if i[1] == 1 %} fradulent transaction. {% endif %}
-					    	    Predicted: {% if i[2] == 0 %} non-fradulent transaction. {% endif %}
-					    	    		 	  {% if i[2] == 1 %} fradulent transaction. {% endif %} 	 
-					    	</li>
-						</ul>
-					{% endfor %}
-					<p>
-		        </div>
-			</div>    
-	    </form>
-
-	<!-- 	<form action="" method="get">
-	     		
-		</form>  -->   
-
-
-	<!-- <div class="form-group">
-		<label for="customerid">Customer ID</label>
-		<input type="text" class="form-control" id="customerid" name="customerid"></div>
-		<p class="form-control">{{ form.run() }}</p>     -->
-
-	</div>
-
-	<div class="p-5">
-		<form action="/step3" method="POST">
-			<button type="submit" class= "btn btn-success">Show Evaluation Metrics</button>
-		</form>
-	</div>
-
+	<head>
+		 <!-- Required meta tags -->
+		 <meta charset="utf-8">
+		 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	 
+		 <!-- Bootstrap CSS -->
+		 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	 
+		 <title>Fraud Detection using Graph Databases</title>
+		 <style>
+			.system-name{
+				margin-top: 15px;
+				margin-bottom: 15px;
+				padding-top: 10px;
+				padding-bottom: 10px;
+				text-align: center;
+			}
+	
+			.header h1{
+				text-align: center;
+			}
+		</style>
+		<script>
+			function setVisible(selector, visible) {
+				document.querySelector(selector).style.display = visible ? 'block' : 'none';
+			}
+			function spinner(){
+				console.log("called");
+				setVisible('#spinner', true);
+			}
+		</script>
+		
+	</head>
+	<body>
+		<div class="container">
+			<div class="card">
+				<div class="card-header">
+					<div class="system-name">
+						<p><h1>Fraud Detection using Graph Databases</h1></p>
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="custom-form">
+							<form action="" method="post" novalidate>
+								<div class="row">
+									<div class="form-group mx-sm-3 mb-2">    
+										{{ form.customerid.label }}
+										{{ form.customerid(class_="form-control") }}
+									</div>
+				
+									<div class="form-group mx-sm-3 mb-2">
+										{{ form.merchantid.label }}
+										{{ form.merchantid(class_="form-control") }}
+									</div>  
+				
+									<div class="form-group mx-sm-3 mb-2">
+										{{ form.model.label }}
+										{{ form.model(class_="form-control") }}
+										
+									</div>
+				
+									<div class="form-group mx-lg-4 pt-4  mt-2">	        	
+										{{ form.run(class_="btn btn-success ",onclick="spinner()") }}
+									</div>
+								</div>
+							</form>
+							<div class="row">
+								<br><hr><br>
+							</div>
+							<div class="row">
+								<div class="spinner-border text-success m-5" id="spinner" role="status"  style="width: 3rem; height: 3rem; display: none;">
+									<span class="sr-only">Loading...</span>
+								</div>
+							</div>
+							<div id = "resultsDisplay" class ="row"> 
+								<div class="form-group">
+									{% if form.results.data != false %}
+										<h5 class="text-success"> {{form.results.data}} </h5>
+									{% endif %}
+								</div>
+								<div class="row">
+									<p>
+									{% for i in form.allres %}
+										<ul>
+											<li>
+												Transaction amount: {{ i[0] }}
+												was a  {% if i[1] == 0 %} non-fradulent transaction. {% endif %}
+														{% if i[1] == 1 %} fradulent transaction. {% endif %}
+												Predicted: {% if i[2] == 0 %} non-fradulent transaction. {% endif %}
+															{% if i[2] == 1 %} fradulent transaction. {% endif %} 	 
+											</li>
+										</ul>
+									{% endfor %}
+									<p>
+								</div>
+							</div>
+							<div class="row">
+								<form action="/step3" method="GET">
+									{% if form.results.data != false %}
+										<div class="form-grou">
+											<button type="submit" class= "btn btn-success">Show Evaluation Metrics</button>
+										</div>
+									{% endif %}
+								</form>
+							</div>
+					</div>	
+				</div>
+			</div>
+		</div>
+	
+		<!-- Optional JavaScript -->
+		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>	
+	</body>
 </html>
