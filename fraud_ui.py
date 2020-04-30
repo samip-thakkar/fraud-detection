@@ -132,9 +132,9 @@ class InputData(Form):
 			x_original_train = x_graph_train[x_graph_train.columns[6:]]
 			x_original_test = x_graph_test[x_graph_test.columns[6:]]
 
-			y_train = pd.read_csv('data/train/y_train.csv', header=None)  
+			y_train = pd.read_csv('data/train/y_train.csv')  
 			print("y train shape after reading:", y_train.shape)
-			y_test = pd.read_csv('data/test/y_test.csv', header=None)  
+			y_test = pd.read_csv('data/test/y_test.csv')  
 
 			# Separate graph and non graph training features
 
@@ -147,7 +147,6 @@ class InputData(Form):
 				graphClassification = executor.submit(classification, cid, mid, ml, x_graph_train, x_graph_test, y_train, y_test)
 				originalClassification = executor.submit(classification, cid, mid, ml, x_original_train, x_original_test, y_train, y_test)
 				graph_res = graphClassification.result()
-				print(graph_res)
 				original_res = originalClassification.result()
 				
 			#Display prediction on UI
