@@ -29,7 +29,7 @@ class Classifier:
         print("Logistic Regression")
         #from sklearn.model_selection import StratifiedKFold
         from sklearn.linear_model import LogisticRegression
-        model = LogisticRegression(C = 0.01, class_weight = {1: 0.5, 0: 0.5}, penalty = 'l2', solver = 'saga')
+        model = LogisticRegression(C = 1, class_weight = {1: 0.81, 0: 0.1}, penalty = 'l1', solver = 'liblinear')
         model.fit(x_train, y_train)
         return model
 
