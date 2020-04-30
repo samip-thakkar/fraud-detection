@@ -8,6 +8,7 @@
 import pandas as pd
 import numpy as np 
 from sample import Sample
+from sklearn.preprocessing import LabelEncoder
 
 sample = Sample()
 
@@ -40,10 +41,10 @@ class Preprocess():
         df = df.drop(['zipcodeOri', 'zipMerchant'], axis = 1)
         
         #Clean the data
-        df['age'] = df['age'].apply(lambda x: x[1]).replace('U', 7).astype(int)
-        df['gender'] = df['gender'].apply(lambda x: x[1])
+        #df['age'] = df['age'].apply(lambda x: x[1]).replace('U', 7).astype(int)
+        #df['gender'] = df['gender'].apply(lambda x: x[1])
         df['merchant'] = df['merchant'].apply(lambda x: x[1:-1])
-        df['category'] = df['category'].apply(lambda x: x[1:-1])
+        #df['category'] = df['category'].apply(lambda x: x[1:-1])
         df['customer'] = df['customer'].apply(lambda x: x[2:-1]).astype(float)
         #Random shuffle
         df = df.sample(frac = 1).reset_index(drop = True)
@@ -55,10 +56,12 @@ class Preprocess():
         #Describe the data as features and target class as label
         features = df.drop('fraud', axis = 1)
         label = df.fraud
-        features = features[['customer','amount', 'age', 'gender', 'merchant', 'category']]
-        features = pd.get_dummies(features, columns = ['age', 'gender', 'merchant', 'category'])
+        features = features[['customer','amount', 'merchant']]
+        # Get validation data
+        features = pd.get_dummies(features, columns = ['merchant'])
         #Label Encoding the data
         return features, label
+
     
     """Split the data for training and testing data"""
     def split_data(self):

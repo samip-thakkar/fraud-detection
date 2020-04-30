@@ -20,25 +20,27 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">Specificity</th>
-                <td>{{form.evalMetric.specificity}}</td>
-              </tr>
+             <!--
               <tr>
                 <th scope="row">Accuracy</th>
-                <td>{{form.evalMetric.accuracy}}</td>
+                <td>{{form.evalMetric.accuracy * 100 | round(1) }} %</td>
               </tr>
+            -->
+            <tr>
+              <th scope="row">Fraud Precision</th>
+              <td>{{form.evalMetric.fraud_precision * 100 | round(1) }} %</td>
+            </tr>
+            <tr>
+              <th scope="row">Fraud Recall</th>
+              <td>{{form.evalMetric.fraud_recall * 100 | round(1) }} %</td>
+            </tr>
+            <tr>
+              <th scope="row">Fraud F1 Score</th>
+              <td>{{form.evalMetric.fraud_f1_score}}</td>
+            </tr>
               <tr>
                 <th scope="row">Balanced Accuracy</th>
-                <td>{{form.evalMetric.balanced_accuracy}}</td>
-              </tr>
-              <tr>
-                <th scope="row">Precision</th>
-                <td>{{form.evalMetric.precision}}</td>
-              </tr>
-              <tr>
-                <th scope="row">Recall</th>
-                <td>{{form.evalMetric.recall}}</td>
+                <td>{{form.evalMetric.balanced_accuracy * 100 | round(1) }} %</td>
               </tr>
               <tr>
                 <th scope="row">F1 Score Macro</th>
@@ -52,10 +54,7 @@
                 <th scope="row">F Beta Score</th>
                 <td>{{form.evalMetric.f_beta_score}}</td>
               </tr>
-              <tr>
-                <th scope="row">AUC Score</th>
-                <td>{{form.evalMetric.auc_score}}</td>
-              </tr>
+            <!--
               <tr>
                 <th scope="row">Zero One Loss</th>
                 <td>{{form.evalMetric.zero_one_loss}}</td>
@@ -72,18 +71,8 @@
                 <th scope="row">Cohen Keppa Score</th>
                 <td>{{form.evalMetric.cohen_keppa_score}}</td>
               </tr>
-              <tr>
-                <th scope="row">Fraud Precision</th>
-                <td>{{form.evalMetric.fraud_precision}}</td>
-              </tr>
-              <tr>
-                <th scope="row">Fraud Recall</th>
-                <td>{{form.evalMetric.fraud_recall}}</td>
-              </tr>
-              <tr>
-                <th scope="row">Fraud F1 Score</th>
-                <td>{{form.evalMetric.fraud_f1_score}}</td>
-              </tr>
+              -->
+             
             </tbody>
         </table>
     </div>
