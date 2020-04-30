@@ -111,8 +111,8 @@ class Classifier:
         from keras.layers import Dense
         # adding layers
         model = Sequential()
-        model.add(Dense(64, input_dim= x_train.shape[1], activation='relu'))
-        model.add(Dense(32, activation='relu'))
+        model.add(Dense(32, input_dim= x_train.shape[1], activation='relu'))
+        model.add(Dense(16, activation='relu'))
         model.add(Dense(1, activation="sigmoid"))
         # compiling model
         model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
