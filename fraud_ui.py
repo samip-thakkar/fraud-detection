@@ -64,6 +64,8 @@ class InputData(Form):
 	merchantid = TextField('Merchant ID', validators=[validators.required()])
 	model = SelectField('Select a model', choices=[('lr', 'Logistic Regression'), ('xgb', 'XG_Boost'), ('rf','Random Forest'), ('nn','Neural Network')])
 	results = SubmitField('Get Results')
+	graph_results = ""
+	original_results = ""
 
 	
 
