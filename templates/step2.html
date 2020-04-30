@@ -77,8 +77,8 @@
 							<div id = "resultsDisplay" class ="row"> 
 								
 								<div class="form-group">
-									{% if form.original_results.data != false %}
-										<h5 class="text-success"> {{form.original_results.data}} </h5>
+									{% if form.original_results != false %}
+										<h5 class="text-success"> {{form.original_results}} </h5>
 									{% endif %}
 								</div>
 							
@@ -100,8 +100,8 @@
 								<hr> 
 								
 								<div class="form-group">
-									{% if form.graph_results.data != false %}
-										<h5 class="text-success"> {{form.graph_results.data}} </h5>
+									{% if form.graph_results != false %}
+										<h5 class="text-success"> {{form.graph_results}} </h5>
 									{% endif %}
 								</div>
 							
@@ -124,7 +124,7 @@
 							<div class="row">
 								<form action="/step3" method="POST">
 									{% if form.results.data != false %}
-										<div class="form-grou">
+										<div class="form-group">
 											<button type="submit" class= "btn btn-success">Show Evaluation Metrics</button>
 										</div>
 									{% endif %}

@@ -31,6 +31,7 @@ def classification(cid, mid, ml, x_train, x_test, y_train, y_test):
 	clf = {'lr': classifier.logistic_regression, 'dt': classifier.decision_tree_classifier, 'rf': classifier.random_forest, 'svm': classifier.svm, 'xgb': classifier.xg_boost, 'nn':classifier.neural_net}
 	# removing customer id before classification; unwanted
 	# x_train_ip = x_train.drop(['customer'], axis = 1)
+	print("y train shape in classification:", y_train.shape)
 	model = clf[ml](x_train, y_train)
 
 	cid_cols = x_test["customer"] == float(cid)
@@ -124,31 +125,34 @@ class InputData(Form):
 			# load all the data
 			#graph features
 			x_graph_train = pd.read_csv('data/train/x_train.csv')  	
+			print("x train shape after reading:", x_graph_train.shape)			
 			x_graph_test = pd.read_csv('data/test/x_test.csv')  		
 
 			#non-graph features
 			x_original_train = x_graph_train[x_graph_train.columns[6:]]
 			x_original_test = x_graph_test[x_graph_test.columns[6:]]
 
-			y_train = pd.read_csv('data/train/y_train.csv')  
-			y_test = pd.read_csv('data/test/y_test.csv')  
+			y_train = pd.read_csv('data/train/y_train.csv', header=None)  
+			print("y train shape after reading:", y_train.shape)
+			y_test = pd.read_csv('data/test/y_test.csv', header=None)  
 
 			# Separate graph and non graph training features
 
-			step2.original_results.data = "Classification results using original data for transactions between Customer ID " + cid + " and Merchant ID " + mid +":"
-			step2.graph_results.data = "Classification results using graph enhanced data for transactions between Customer ID " + cid + " and Merchant ID " + mid +":"		
+			step2.original_results = "Classification results using original data for transactions between Customer ID " + cid + " and Merchant ID " + mid +":"
+			step2.graph_results = "Classification results using graph enhanced data for transactions between Customer ID " + cid + " and Merchant ID " + mid +":"		
 		
 			mid = "merchant_" + mid	
 			
 			with concurrent.futures.ThreadPoolExecutor() as executor:
 				graphClassification = executor.submit(classification, cid, mid, ml, x_graph_train, x_graph_test, y_train, y_test)
 				originalClassification = executor.submit(classification, cid, mid, ml, x_original_train, x_original_test, y_train, y_test)
-				graph_results = graphClassification.result()
-				original_results = originalClassification.result()
+				graph_res = graphClassification.result()
+				print(graph_res)
+				original_res = originalClassification.result()
 				
 			#Display prediction on UI
-			InputData.allres = original_results
-			InputData.graphres = graph_results
+			InputData.allres = original_res
+			InputData.graphres = graph_res
 			
 		return render_template('step2.html', title='Fraud Detection step 2', form = step2)
 

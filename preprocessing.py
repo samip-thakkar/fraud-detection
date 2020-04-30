@@ -94,7 +94,10 @@ class Preprocess():
 
         # Sampling after preprocessing
         # x_train, y_train = sample.smote(x_train, y_train)
-
+        print("X_train's shape:::", x_train.shape)
+        print("Y_train's shape:::", y_train.shape)
+        print("X_test's shape:::", x_test.shape)
+        print("Y_tes's shape:::", y_test.shape)                 
         x_train.to_csv("data/train/x_train.csv",index=False)
         x_test.to_csv("data/test/x_test.csv",index=False)
         y_train.to_csv("data/train/y_train.csv",index=False)
