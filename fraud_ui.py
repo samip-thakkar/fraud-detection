@@ -32,7 +32,7 @@ class InputData(Form):
 	run = SubmitField('Proceed to step 2')
 	customerid = TextField('Customer ID', validators=[validators.required()])
 	merchantid = TextField('Merchant ID', validators=[validators.required()])
-	model = SelectField('Select a model', choices=[('lr', 'Logistic Regression'), ('svm','SVM'), ('xgb', 'XG_Boost'), ('rf','Random Forest'), ('nn','Neural Network')])
+	model = SelectField('Select a model', choices=[('lr', 'Logistic Regression'), ('xgb', 'XG_Boost'), ('rf','Random Forest'), ('nn','Neural Network')])
 	results = SubmitField('Get Results')
 
 
@@ -122,7 +122,7 @@ class InputData(Form):
 			y_pred[y_pred < 0.5] = 0
 
 			#Get the model evaluation
-			#me.modelevaluation(y_test_ip.to_numpy(), y_pred)
+			me.modelevaluation(y_test_ip.to_numpy(), y_pred)
 
 			#Display prediction on UI
 			InputData.allres = np.hstack([amt, y_test_ip, y_pred]) 
@@ -132,10 +132,10 @@ class InputData(Form):
 	@app.route('/step3', methods=['GET', 'POST'])
 	def step3():
 		step3 = InputData(request.form)
-		if request.method == 'GET':
+		if request.method == 'POST':
 
 			# Opening JSON file
-			f = open('evaluations/model_evaluation.json', )
+			f = open('evaluations/model_evaluation.json')
 
 			# returns JSON object as
 			# a dictionary
@@ -153,3 +153,4 @@ class InputData(Form):
 
 if __name__ == '__main__':
     app.run(debug=True)
+	

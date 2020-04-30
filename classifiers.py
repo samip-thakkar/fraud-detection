@@ -116,7 +116,7 @@ class Classifier:
         model.add(Dense(1, activation="sigmoid"))
         # compiling model
         model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-        model.fit(x_train, y_train, epochs=10, class_weight = {0: 1, 1: 100})
+        model.fit(x_train, y_train, epochs=10, class_weight = {0:1, 1: 100})
         return model
 
     
