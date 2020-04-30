@@ -20,7 +20,7 @@ class Preprocess():
     
     """Read the data"""
     def read_data(self):
-        df = pd.read_csv('data/bs140513_032310.csv')
+        df = pd.read_csv('data/bs140513_032310_graphed.csv')
         return df
 
     """Data Visualization"""
@@ -56,7 +56,7 @@ class Preprocess():
         #Describe the data as features and target class as label
         features = df.drop('fraud', axis = 1)
         label = df.fraud
-        features = features[['customer','amount', 'merchant']]
+        features = features[['merchDegree','custDegree','custPageRank','merchPageRank','merchCommunity','custCommunity','customer','amount', 'merchant']]
         # Get validation data
         features = pd.get_dummies(features, columns = ['merchant'])
         #Label Encoding the data

@@ -75,11 +75,13 @@
 								</div>
 							</div>
 							<div id = "resultsDisplay" class ="row"> 
+								
 								<div class="form-group">
-									{% if form.results.data != false %}
-										<h5 class="text-success"> {{form.results.data}} </h5>
+									{% if form.original_results.data != false %}
+										<h5 class="text-success"> {{form.original_results.data}} </h5>
 									{% endif %}
 								</div>
+							
 								<div class="row">
 									<p>
 									{% for i in form.allres %}
@@ -95,9 +97,32 @@
 									{% endfor %}
 									<p>
 								</div>
+								<hr> 
+								
+								<div class="form-group">
+									{% if form.graph_results.data != false %}
+										<h5 class="text-success"> {{form.graph_results.data}} </h5>
+									{% endif %}
+								</div>
+							
+								<div class="row">
+									<p>
+									{% for i in form.graphres %}
+										<ul>
+											<li>
+												Transaction amount: {{ i[0] }}
+												was a  {% if i[1] == 0 %} non-fradulent transaction. {% endif %}
+														{% if i[1] == 1 %} fradulent transaction. {% endif %}
+												Predicted: {% if i[2] == 0 %} non-fradulent transaction. {% endif %}
+															{% if i[2] == 1 %} fradulent transaction. {% endif %} 	 
+											</li>
+										</ul>
+									{% endfor %}
+									<p>
+								</div>
 							</div>
 							<div class="row">
-								<form action="/step3" method="GET">
+								<form action="/step3" method="POST">
 									{% if form.results.data != false %}
 										<div class="form-grou">
 											<button type="submit" class= "btn btn-success">Show Evaluation Metrics</button>
