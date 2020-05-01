@@ -1,1 +1,1 @@
-{}
+{"graph": {"model": "rf", "accuracy": 0.9964432560603386, "fraud_precision": 0.8932714617169374, "fraud_recall": 0.8020833333333334, "fraud_f1_score": 0.845225027442371}, "original": {"model": "rf", "accuracy": 0.9955687847371121, "fraud_precision": 0.8952380952380953, "fraud_recall": 0.7180555555555556, "fraud_f1_score": 0.796917148362235}}

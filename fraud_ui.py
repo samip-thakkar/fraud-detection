@@ -141,7 +141,11 @@ class InputData(Form):
 			step2.graph_results = "Classification results using graph enhanced data for transactions between Customer ID " + cid + " and Merchant ID " + mid +":"		
 		
 			mid = "merchant_" + mid	
-			
+
+			with open('evaluations/model_evaluation.json','r+') as opened_file:
+				current_json = {}
+				json.dump(current_json, opened_file)
+
 			with concurrent.futures.ThreadPoolExecutor() as executor:
 				graphClassification = executor.submit(classification, cid, mid, ml, x_graph_train, x_graph_test, y_train, y_test, 'graph')
 				originalClassification = executor.submit(classification, cid, mid, ml, x_original_train, x_original_test, y_train, y_test, 'original')
