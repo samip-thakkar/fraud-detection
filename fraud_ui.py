@@ -125,7 +125,6 @@ class InputData(Form):
 			# load all the data
 			#graph features
 			x_graph_train = pd.read_csv('data/train/x_train.csv')  	
-			print("x train shape after reading:", x_graph_train.shape)			
 			x_graph_test = pd.read_csv('data/test/x_test.csv')  		
 
 			#non-graph features
@@ -133,7 +132,6 @@ class InputData(Form):
 			x_original_test = x_graph_test[x_graph_test.columns[6:]]
 
 			y_train = pd.read_csv('data/train/y_train.csv')  
-			print("y train shape after reading:", y_train.shape)
 			y_test = pd.read_csv('data/test/y_test.csv')  
 
 			# Separate graph and non graph training features
