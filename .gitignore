@@ -19,7 +19,6 @@ docs/_build/
 __pycache__/
 data/test/*
 data/train/*
-evaluations/*
 data/validation/*
 # Coverage reports
 htmlcov/

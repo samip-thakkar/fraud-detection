@@ -11,7 +11,7 @@ import json
 class ModelEvaluation():
     
     
-    def modelevaluation(self, y_test, y_pred):
+    def modelevaluation(self, y_test, y_pred, features, ml):
         '''
         confusion = metrics.confusion_matrix(y_test, y_pred)
         print("Confussion matrix: \n", confusion)
@@ -20,40 +20,39 @@ class ModelEvaluation():
         FP = confusion[0, 1]
         FN = confusion[1, 0]
         '''
-        
         data = {}
-        data['evaluation_data'] = []
-
-        #print("Accuracy: ", metrics.accuracy_score(y_test, y_pred))
-        #print("Balanced Accuracy: ", metrics.balanced_accuracy_score(y_test, y_pred, sample_weight = None)) #Average of label accuracies
+        data[features] = []
+        print('----------REPORT-----------')
+        print("Accuracy: ", metrics.accuracy_score(y_test, y_pred))
+        print("Balanced Accuracy: ", metrics.balanced_accuracy_score(y_test, y_pred, sample_weight = None)) #Average of label accuracies
         print("Precision: ", metrics.precision_score(y_test, y_pred))
         print("Recall: ", metrics.recall_score(y_test, y_pred))
         print("F1 score macro: ",metrics.f1_score(y_test, y_pred, average='macro'))     
         print("F1 score micro: ",metrics.f1_score(y_test, y_pred, average='micro'))
         print("F-Beta score: ", metrics.fbeta_score(y_test, y_pred, beta = 10))
-        #print("AUC Score: ", metrics.roc_auc_score(y_test, y_pred))
-        #print("Zero_one_loss", metrics.zero_one_loss(y_test, y_pred))
-        #print("Matthews_corrcoef", metrics.matthews_corrcoef(y_test, y_pred)) #Gives equal weight to all TP, TN, FP, FN (Better than F1-score)
-        #print("Brier score: ", metrics.brier_score_loss(y_test, y_pred))    #The Brier score is calculated as the mean squared error between the expected probabilities for the positive class (e.g. 1.0) and the predicted probabilities. (Better than log_loss)
-        #print("Cohen keppa score: ", metrics.cohen_kappa_score(y_test, y_pred))     #It basically tells you how much better your classifier is performing over the performance of a classifier that simply guesses at random according to the frequency of each class.
+        print("AUC Score: ", metrics.roc_auc_score(y_test, y_pred))
+        print("Zero_one_loss", metrics.zero_one_loss(y_test, y_pred))
+        print("Matthews_corrcoef", metrics.matthews_corrcoef(y_test, y_pred)) #Gives equal weight to all TP, TN, FP, FN (Better than F1-score)
+        print("Brier score: ", metrics.brier_score_loss(y_test, y_pred))    #The Brier score is calculated as the mean squared error between the expected probabilities for the positive class (e.g. 1.0) and the predicted probabilities. (Better than log_loss)
+        print("Cohen keppa score: ", metrics.cohen_kappa_score(y_test, y_pred))     #It basically tells you how much better your classifier is performing over the performance of a classifier that simply guesses at random according to the frequency of each class.
         print("Classification_report\n", metrics.classification_report(y_test, y_pred, output_dict=True))
-        
-        data['evaluation_data'].append({
-            'accuracy': metrics.accuracy_score(y_test, y_pred),
-            'fraud_precision': metrics.classification_report(y_test, y_pred, output_dict=True)['1']['precision'],
-            'fraud_recall': metrics.classification_report(y_test, y_pred, output_dict=True)['1']['recall'],
-            'fraud_f1_score': metrics.classification_report(y_test, y_pred, output_dict=True)['1']['f1-score'],
-            'balanced_accuracy': metrics.balanced_accuracy_score(y_test, y_pred, sample_weight = None),
-            #'recall': metrics.recall_score(y_test, y_pred),
-            'f1_score_macro': metrics.f1_score(y_test, y_pred, average='macro'),
-            'f1_score_micro': metrics.f1_score(y_test, y_pred, average='micro'),
-            'f_beta_score': metrics.fbeta_score(y_test, y_pred, beta = 10), 
-            #'auc_score':metrics.roc_auc_score(y_test, y_pred),
-            #'zero_one_loss': metrics.zero_one_loss(y_test, y_pred),
-            #'matthews_corrcoef': metrics.matthews_corrcoef(y_test, y_pred),
-            #'brier_score': metrics.brier_score_loss(y_test, y_pred),
-            #'cohen_keppa_score': metrics.cohen_kappa_score(y_test, y_pred)
-        })
+        print('----------REPORT-----------')
+
+        with open('evaluations/model_evaluation.json') as json_file: 
+            data = json.load(json_file) 
+            data[features].append({
+                'model': ml,
+                'accuracy': metrics.accuracy_score(y_test, y_pred),
+                'fraud_precision': metrics.classification_report(y_test, y_pred, output_dict=True)['1']['precision'],
+                'fraud_recall': metrics.classification_report(y_test, y_pred, output_dict=True)['1']['recall'],
+                'fraud_f1_score': metrics.classification_report(y_test, y_pred, output_dict=True)['1']['f1-score']           
+            })
+
+       
+        print('FINAL DATA:')
+        print('-------')
+        print(data)
+        print('-------')
 
         with open('evaluations/model_evaluation.json', 'w') as outfile:
             json.dump(data, outfile)
