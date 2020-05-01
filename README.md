@@ -35,9 +35,9 @@ Our client side application is implemented in Flask framework which can interact
 4) You can run the application by then running : `python3 fraud_ui.py` which is the starting point.
 5) On the first screen you'll be asked to enter password which will help you connect to the remote Neo4j instance for graph features extraction. Please enter `semantic` as the password.
 6) On the second screen you'll have to input a merchant ID and a customer ID for classification.
-7) For this you need to go the directory inside our application : `data/validation/validation.csv` and choose any random fraudulent transaction pair with the customer and merchant ID.
+7) For this you need to go the directory inside our application : `data/validation/validation.csv` and choose any random  transaction pair with the customer and merchant ID.
 8) Please enter the values in the respective input boxes and click submit.
-9) After some time you should be able to see the classification results being displayed on the screen itself. You need to wait for a couple of minutes for the model to finish its runtime classification.
-10) The results should be now displayed with the actual values and the predicted ones.
-11) User can now navigate to the screen 3 where they can compare the evaluation metrics like accuracy, recall and precision for fraud transactions based on both original dataset and the dataset augmented with graph features.
+9) After some time you should be able to see the classification results being displayed on the screen itself. You need to wait for a couple of minutes for the model to finish its runtime classification. (Random forest is the fastest one)
+10) The prediction results should be now displayed with the actual values and the predicted ones.
+11) User can now navigate to the screen 3 where they can compare the evaluation metrics like accuracy, recall and precision for fraud transactions based on both original dataset and the dataset augmented with graph features OR the user can find the model evaluation metrics in the file `model_evaluations.csv` under `evaluations` folder.
 
