@@ -7,6 +7,7 @@ from sklearn import metrics
 import matplotlib.pyplot as plt
 import time
 import json
+import threading 
 
 class ModelEvaluation():
     
@@ -38,24 +39,18 @@ class ModelEvaluation():
         print("Classification_report\n", metrics.classification_report(y_test, y_pred, output_dict=True))
         print('----------REPORT-----------')
 
-        with open('evaluations/model_evaluation.json') as json_file: 
-            data = json.load(json_file) 
-            data[features].append({
-                'model': ml,
+        with open('evaluations/model_evaluation.json','r+') as opened_file:
+            current_json = json.load(opened_file)
+            current_json[features] = {
+                'model': ''+ml,
                 'accuracy': metrics.accuracy_score(y_test, y_pred),
                 'fraud_precision': metrics.classification_report(y_test, y_pred, output_dict=True)['1']['precision'],
                 'fraud_recall': metrics.classification_report(y_test, y_pred, output_dict=True)['1']['recall'],
-                'fraud_f1_score': metrics.classification_report(y_test, y_pred, output_dict=True)['1']['f1-score']           
-            })
-
-       
-        print('FINAL DATA:')
-        print('-------')
-        print(data)
-        print('-------')
-
-        with open('evaluations/model_evaluation.json', 'w') as outfile:
-            json.dump(data, outfile)
+                'fraud_f1_score': metrics.classification_report(y_test, y_pred, output_dict=True)['1']['f1-score']        
+            }
+            opened_file.seek(0)
+            opened_file.truncate(0)
+            json.dump(current_json, opened_file)
         
         
     def plotROC(self, y_test, y_pred):        #Receiver Operating Characteristic (ROC)
