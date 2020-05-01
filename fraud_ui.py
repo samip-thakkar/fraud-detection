@@ -142,7 +142,7 @@ class InputData(Form):
 		
 			mid = "merchant_" + mid	
 
-			with open('evaluations/model_evaluation.json','r+') as opened_file:
+			with open('evaluations/model_evaluation.json','w') as opened_file:
 				current_json = {}
 				json.dump(current_json, opened_file)
 
@@ -172,7 +172,8 @@ class InputData(Form):
 
 			# Iterating through the json
 			# list
-			InputData.evalMetric = data['evaluation_data'][0]
+			InputData.evalMetricGraph = data['graph']
+			InputData.evalMetricOriginal = data['original']
 
 			# Closing file
 			f.close()
