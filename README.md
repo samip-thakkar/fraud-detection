@@ -39,5 +39,5 @@ Our client side application is implemented in Flask framework which can interact
 8) Please enter the values in the respective input boxes and click submit.
 9) After some time you should be able to see the classification results being displayed on the screen itself. You need to wait for a couple of minutes for the model to finish its runtime classification. (Random forest is the fastest one)
 10) The prediction results should be now displayed with the actual values and the predicted ones.
-11) User can now navigate to the screen 3 where they can compare the evaluation metrics like accuracy, recall and precision for fraud transactions based on both original dataset and the dataset augmented with graph features OR the user can find the model evaluation metrics in the file `model_evaluations.csv` under `evaluations` folder.
+11) User can now navigate to the screen 3 where they can compare the evaluation metrics like accuracy, recall and precision for fraud transactions based on both original dataset and the dataset augmented with graph features OR the user can find the model evaluation metrics in the file `model_evaluations.json` under `evaluations` folder.
 
