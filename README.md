@@ -3,7 +3,7 @@
 ## Why graph databases?
 
 Graph databases are indexed naturally by relationships which makes it easier for users to include data without having to do much modeling in advance. This makes graph technology very useful for keeping up with the deception and speed of fraudsters.
-Traditional fraud prevention measures focus on discrete data points such as specific accounts, individuals, devices or IP addresses. However, today’s sophisticated fraudsters escape detection by forming fraud rings comprised of stolen and synthetic identities. To uncover such fraud rings, it is essential to look beyond individual data points to the connections that link them.
+Traditional fraud prevention measures focus on discrete data points such as specific accounts, individuals, devices or IP addresses. However, today’s sophisticated fraudsters escape detection by forming fraud rings comprised of stolen and synthetic identities. To uncover such fraud rings, it is essential to look beyond individual data points to the connections that link them. In our project we try to showcase the difference between doing fraud transaction classification on original as well as graph features augmented dataset.
 
 ## Features used for classfication
 
