@@ -20,12 +20,12 @@
               </tr>
             </thead>
             <tbody>
-             <!--
+             
               <tr>
-                <th scope="row">Accuracy</th>
+                <th scope="row">Model Accuracy</th>
                 <td>{{form.evalMetric.accuracy * 100 | round(1) }} %</td>
               </tr>
-            -->
+            
             <tr>
               <th scope="row">Fraud Precision</th>
               <td>{{form.evalMetric.fraud_precision * 100 | round(1) }} %</td>
@@ -38,6 +38,7 @@
               <th scope="row">Fraud F1 Score</th>
               <td>{{form.evalMetric.fraud_f1_score}}</td>
             </tr>
+            <!--
               <tr>
                 <th scope="row">Balanced Accuracy</th>
                 <td>{{form.evalMetric.balanced_accuracy * 100 | round(1) }} %</td>
@@ -54,6 +55,7 @@
                 <th scope="row">F Beta Score</th>
                 <td>{{form.evalMetric.f_beta_score}}</td>
               </tr>
+            -->
             <!--
               <tr>
                 <th scope="row">Zero One Loss</th>

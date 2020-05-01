@@ -26,7 +26,7 @@ app.logger.setLevel(DEBUG)
 app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
 
 
-def classification(cid, mid, ml, x_train, x_test, y_train, y_test):
+def classification(cid, mid, ml, x_train, x_test, y_train, y_test, features):
 	# Classify here
 	clf = {'lr': classifier.logistic_regression, 'dt': classifier.decision_tree_classifier, 'rf': classifier.random_forest, 'svm': classifier.svm, 'xgb': classifier.xg_boost, 'nn':classifier.neural_net}
 	# removing customer id before classification; unwanted
@@ -52,7 +52,7 @@ def classification(cid, mid, ml, x_train, x_test, y_train, y_test):
 	y_pred[y_pred < 0.5] = 0
 
 	# Model evaluation
-	me.modelevaluation(y_test.to_numpy(), y_pred)
+	me.modelevaluation(y_test.to_numpy(), y_pred, features, ml)
 
 	return np.hstack([amt, y_test_ip, y_pred[cid_cols & mid_cols]]) 
   
@@ -143,8 +143,8 @@ class InputData(Form):
 			mid = "merchant_" + mid	
 			
 			with concurrent.futures.ThreadPoolExecutor() as executor:
-				graphClassification = executor.submit(classification, cid, mid, ml, x_graph_train, x_graph_test, y_train, y_test)
-				originalClassification = executor.submit(classification, cid, mid, ml, x_original_train, x_original_test, y_train, y_test)
+				graphClassification = executor.submit(classification, cid, mid, ml, x_graph_train, x_graph_test, y_train, y_test, 'graph')
+				originalClassification = executor.submit(classification, cid, mid, ml, x_original_train, x_original_test, y_train, y_test, 'original')
 				graph_res = graphClassification.result()
 				original_res = originalClassification.result()
 						
