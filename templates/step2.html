@@ -74,6 +74,13 @@
 									<span class="sr-only">Loading...</span>
 								</div>
 							</div>
+
+							<div class="form-group">
+								{% if form.original_results != false %}
+									<h5 class="text-success"> {{form.original_results}} </h5>
+								{% endif %}
+							</div>
+
 							<div id = "resultsDisplay" class ="row"> 					
 								<div class="row">
 									<p>
