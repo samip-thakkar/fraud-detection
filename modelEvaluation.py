@@ -24,8 +24,8 @@ class ModelEvaluation():
         data = {}
         data['evaluation_data'] = []
 
-        #print("Accuracy: ", metrics.accuracy_score(y_test, y_pred))
-        #print("Balanced Accuracy: ", metrics.balanced_accuracy_score(y_test, y_pred, sample_weight = None)) #Average of label accuracies
+        print("Accuracy: ", metrics.accuracy_score(y_test, y_pred))
+        print("Balanced Accuracy: ", metrics.balanced_accuracy_score(y_test, y_pred, sample_weight = None)) #Average of label accuracies
         print("Precision: ", metrics.precision_score(y_test, y_pred))
         print("Recall: ", metrics.recall_score(y_test, y_pred))
         print("F1 score macro: ",metrics.f1_score(y_test, y_pred, average='macro'))     
@@ -37,7 +37,7 @@ class ModelEvaluation():
         #print("Brier score: ", metrics.brier_score_loss(y_test, y_pred))    #The Brier score is calculated as the mean squared error between the expected probabilities for the positive class (e.g. 1.0) and the predicted probabilities. (Better than log_loss)
         #print("Cohen keppa score: ", metrics.cohen_kappa_score(y_test, y_pred))     #It basically tells you how much better your classifier is performing over the performance of a classifier that simply guesses at random according to the frequency of each class.
         print("Classification_report\n", metrics.classification_report(y_test, y_pred, output_dict=True))
-        
+        '''
         data['evaluation_data'].append({
             'accuracy': metrics.accuracy_score(y_test, y_pred),
             'fraud_precision': metrics.classification_report(y_test, y_pred, output_dict=True)['1']['precision'],
@@ -54,7 +54,7 @@ class ModelEvaluation():
             #'brier_score': metrics.brier_score_loss(y_test, y_pred),
             #'cohen_keppa_score': metrics.cohen_kappa_score(y_test, y_pred)
         })
-
+        '''
         with open('evaluations/model_evaluation.json', 'w') as outfile:
             json.dump(data, outfile)
         

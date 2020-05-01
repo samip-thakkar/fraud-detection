@@ -31,21 +31,19 @@ def classification(cid, mid, ml, x_train, x_test, y_train, y_test):
 	clf = {'lr': classifier.logistic_regression, 'dt': classifier.decision_tree_classifier, 'rf': classifier.random_forest, 'svm': classifier.svm, 'xgb': classifier.xg_boost, 'nn':classifier.neural_net}
 	# removing customer id before classification; unwanted
 	# x_train_ip = x_train.drop(['customer'], axis = 1)
-	print("y train shape in classification:", y_train.shape)
 	model = clf[ml](x_train, y_train)
 
 	cid_cols = x_test["customer"] == float(cid)
 	mid_cols = x_test[mid] == 1
 
 	transaction_idx = x_test[cid_cols & mid_cols].index
-	x_test = x_test[cid_cols & mid_cols]
-	
+	x_test_ip = x_test[cid_cols & mid_cols]
 	y_test_ip = y_test.loc[transaction_idx]
 
 	#Get the predicted values
 	y_pred = model.predict(x_test)
 
-	amt = x_test['amount'].to_numpy()
+	amt = x_test_ip['amount'].to_numpy()
 
 	amt = amt.reshape((amt.shape[0],1))
 
@@ -53,7 +51,10 @@ def classification(cid, mid, ml, x_train, x_test, y_train, y_test):
 	y_pred[y_pred >= 0.5] = 1
 	y_pred[y_pred < 0.5] = 0
 
-	return np.hstack([amt, y_test_ip, y_pred]) 
+	# Model evaluation
+	me.modelevaluation(y_test.to_numpy(), y_pred)
+
+	return np.hstack([amt, y_test_ip, y_pred[cid_cols & mid_cols]]) 
   
 
 class InputData(Form):
@@ -146,8 +147,8 @@ class InputData(Form):
 				originalClassification = executor.submit(classification, cid, mid, ml, x_original_train, x_original_test, y_train, y_test)
 				graph_res = graphClassification.result()
 				original_res = originalClassification.result()
-				
-			#Display prediction on UI
+						
+			# Display prediction on UI
 			InputData.allres = original_res
 			InputData.graphres = graph_res
 			
